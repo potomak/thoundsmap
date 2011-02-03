@@ -1,9 +1,56 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <title>Thounds Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="http://api.maps.ovi.com/jsl.js" type="text/javascript" charset="utf-8"></script>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
     <h1>Thounds Map</h1>
     <p>Hi, {{ name }}</p>
+    <div id="map" style="width:600px; height:400px;"></div>
+      <script type="text/javascript">
+        var components_collection = [
+          new ovi.mapsapi.map.component.Behavior(), //behavior collection 
+          new ovi.mapsapi.map.component.ZoomBar(),
+          new ovi.mapsapi.map.component.Overview(),
+          new ovi.mapsapi.map.component.TypeSelector(),
+          new ovi.mapsapi.map.component.ScaleBar()
+        ];
+        
+        var infobubbles = new ovi.mapsapi.map.component.InfoBubbles();
+        
+        var venice = [45.4375, 12.335833];
+        
+        var map = new ovi.mapsapi.map.Display(document.getElementById("map"), {
+          components: components_collection,
+          zoomLevel: 10, //zoom level for the map
+          center: venice //center coordinates
+        });
+        
+        //remove zoom.MouseWheel behavior for better page scrolling experience
+        map.removeComponent(map.getComponentById("zoom.MouseWheel"));
+        map.components.add(infobubbles);
+        
+        var marker = new ovi.mapsapi.map.Marker(
+          new ovi.mapsapi.geo.Coordinate(venice[0], venice[1]), {
+            title: "marker",
+            visibility: true,
+            icon: "/images/thound_marker.png",
+            //offset the top left icon corner so that it's centered above the coordinate
+            anchor: new ovi.mapsapi.util.Point(32, 32),
+            eventListener: {
+              click: function(event) {
+                infobubbles.addBubble(
+                  "Infobubble", //position is converted here to latitude and longitude
+                  new ovi.mapsapi.geo.Coordinate(venice[0], venice[1]));
+              }
+            }
+        });
+        
+        map.objects.add(marker);
+      </script>
+    </div>
   </body>
 </html>
