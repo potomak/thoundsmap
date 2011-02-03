@@ -1,14 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Thounds Map</title>
+    <title>{{ title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="http://api.maps.ovi.com/jsl.js" type="text/javascript" charset="utf-8"></script>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
-    <h1>Thounds Map</h1>
-    <p>Hi, {{ name }}</p>
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for thound in thounds %}
+      <li>{{ thound.tracks.0.title }}</li>
+    {% endfor %}
+    </ul>
     <div id="map" style="width:600px; height:400px;"></div>
       <script type="text/javascript">
         var components_collection = [
