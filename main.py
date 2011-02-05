@@ -39,6 +39,37 @@ class GetThoundsHandler(webapp.RequestHandler):
         self.response.out.write(geotagged_thounds)
 
 
+class RunScriptHandler(webapp.RequestHandler):
+    def get(self):
+        import re
+        
+        f = open('thounds.js')
+        thounds = simplejson.loads(f.read())['thounds-collection']['thounds']
+
+        self.response.out.write(len(thounds))
+
+        geotagged = []
+
+        for thound in thounds:
+            if thound['tracks'][0]['lat']:
+                geotagged.append(thound)
+
+        self.response.out.write(len(geotagged))
+
+        for thound in geotagged:
+            geotagged_thound = GeotaggedThound()
+
+            geotagged_thound.location = db.GeoPt(thound['tracks'][0]['lat'], thound['tracks'][0]['lng'])
+            if "Z" in thound['created_at']:
+                geotagged_thound.created_at = datetime.strptime(re.sub("Z", "", thound['created_at']), "%Y-%m-%dT%H:%M:%S")
+            else:
+                geotagged_thound.created_at = datetime.strptime(re.sub("\+(\d+):(\d+)", "", thound['created_at']), "%Y-%m-%dT%H:%M:%S")
+            geotagged_thound.data = simplejson.dumps(thound)
+            geotagged_thound.put()
+
+        self.response.out.write("done!")
+
+
 def main():
     # Set the logging level in the main function
     # See the section on Requests and App Caching for information on how
@@ -46,7 +77,8 @@ def main():
     logging.getLogger().setLevel(logging.DEBUG)
         
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/get', GetThoundsHandler)],
+                                          ('/get', GetThoundsHandler),
+                                          ('/run_script', RunScriptHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 
