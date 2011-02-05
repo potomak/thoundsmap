@@ -4,7 +4,9 @@ var ThoundsMap = (function () {
     
     onReady: function(success) {
       if(success) {
-        console.log("Thounds radio is ready!");
+        console.log("SM2 is ready!");
+        
+        init_map();
       }
       else {
         console.log("Some errors occur during initialization!");
@@ -25,15 +27,16 @@ var ThoundsMap = (function () {
         },
         whileloading: function() {
           percentage = (this.bytesLoaded / this.bytesTotal) * 100;
-          ThoundsMap.ui.loading.progress(percentage);
+          ThoundsMap.ui.loading.progress(percentage, thound_id);
         },
         whileplaying: function() {
           realDuration = (this.duration * this.bytesTotal) / this.bytesLoaded;
           percentage = (this.position / realDuration) * 100;
-          ThoundsMap.ui.playing.progress(percentage);
+          ThoundsMap.ui.playing.progress(percentage, thound_id);
         },
         onfinish: function() {
           console.log("Song complete...");
+          ThoundsMap.ui.controls.stop(thound_id);
         },
         onplay: function() {
           console.log("Song playing...");
@@ -43,10 +46,10 @@ var ThoundsMap = (function () {
     
     stop: function() {
       if(ThoundsMap.thoundSound) {
-        console.log("Stop (ThoundsRadio.thoundSound.playState: " + ThoundsRadio.thoundSound.playState);
+        console.log("Stop (ThoundsRadio.thoundSound.playState: " + ThoundsMap.thoundSound.playState);
         ThoundsMap.thoundSound.destruct();
       }
-      ThoundsMap.ui.loading.complete();
+      //ThoundsMap.ui.loading.complete();
       return true;
     }
   };

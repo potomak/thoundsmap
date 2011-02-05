@@ -8,8 +8,9 @@ ThoundsMap.ui = (function() {
           $("#thound_" + thound_id + " .play").hide();
           $("#thound_" + thound_id + " .stop").show();
         },
-        stop: function() {
+        stop: function(thound_id) {
           console.log("stop");
+          ThoundsMap.stop();
           $("#thound_" + thound_id + " .stop").hide();
           $("#thound_" + thound_id + " .play").show();
         }

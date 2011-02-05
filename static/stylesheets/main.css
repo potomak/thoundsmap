@@ -35,9 +35,11 @@ body {
 
 .controls_wrapper {
 	margin-top: 10px;
+	margin-bottom: 10px;
 	width: 34px;
 	height: 30px;
 	position: relative;
+	float: left;
 }
 
 .play {
@@ -61,22 +63,23 @@ body {
 .progress_wrapper {
 	margin-top: 10px;
 	width: 100px;
-	height: 10px;
+	height: 30px;
 	position: relative;
+	margin-left: 35px;
 }
 
 .loading {
 	position: absolute;
 	background-color: #dddddd;
-	height: 10px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
+	height: 30px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
 }
 
 .playing {
 	position: absolute;
 	background-color: #00ccff;
-	height: 10px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
+	height: 30px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
 }
