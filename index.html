@@ -19,12 +19,10 @@
     <script src="/javascripts/thounds_map.ui.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
-    <h1>{{ title }}</h1>
-    <ul>
-    {% for thound in thounds %}
-      <li>{{ thound.tracks.0.title }}</li>
-    {% endfor %}
-    </ul>
+    <div id="thounds_map_logo">
+      <h1>{{ title }}</h1>
+    </div>
+    
     <div id="map" style="width:600px; height:400px;"></div>
       <script type="text/javascript">
       
