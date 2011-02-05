@@ -1,3 +1,79 @@
+body, html {
+	margin: 0;
+	padding: 0;
+}
+
 body {
-  font-family: Helvetica, Arial, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+#wrapper {
+	overflow: hidden;
+}
+
+#thounds_map_logo {
+	z-index: 100;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-image: url(/images/logo_thounds_map.png);
+	width: 416px;
+	height: 172px;
+}
+
+#thounds_map_logo h1 {
+	text-indent: -9000px;
+}
+
+.player {}
+
+.title {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14px;
+}
+
+.controls_wrapper {
+	width: 34px;
+	height: 30px;
+	position: relative;
+}
+
+.play {
+	position: absolute;
+	display: block;
+	text-indent: -9000px;
+	width: 34px;
+	height: 30px;
+	background-image: url(/images/play.png);
+}
+
+.stop {
+	position: absolute;
+	display: block;
+	text-indent: -9000px;
+	width: 34px;
+	height: 30px;
+	background-image: url(/images/stop.png);
+}
+
+.progress_wrapper {
+	width: 100px;
+	height: 10px;
+	position: relative;
+}
+
+.loading {
+	position: absolute;
+	background-color: #dddddd;
+	height: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.playing {
+	position: absolute;
+	background-color: #00ccff;
+	height: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
 }
