@@ -11,11 +11,15 @@ var ThoundsMap = (function () {
       }
     },
     
-    load: function(thound) {
+    load: function(thound_id) {
+      var thound = thounds[thound_id];
+      
       ThoundsMap.thoundSound = soundManager.createSound({
         id: 'thound_' + thound.id,
         url: thound.mix_url,
         type: 'audio/mp3',
+        autoLoad: true,
+        autoPlay: true,
         onload: function() {
           console.log(this.loaded ? "Song loading complete..." : "Song loading failure...");
         },
