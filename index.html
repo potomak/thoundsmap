@@ -4,6 +4,7 @@
     <title>{{ title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="http://api.maps.ovi.com/jsl.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-1.5.min.js" type="text/javascript" charset="utf-8"></script>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   </head>
   <body>
@@ -54,6 +55,23 @@
         });
         
         map.objects.add(marker);
+        
+        function updater(data, success) {
+            if (data) {
+                alert(data.some);
+            }
+        }
+        
+        function display_thounds(evt) {
+            $.ajax ({
+			    type: "GET",
+			    url: "/geotagged",
+			    dataType: "json",
+			    cache: false, //VITAL line: the getJON func does not prevent caching!
+			    success: updater
+		    });
+		}
+        map.addListener("dragend", display_thounds, false);
       </script>
     </div>
   </body>
