@@ -16,6 +16,7 @@
     </ul>
     <div id="map" style="width:600px; height:400px;"></div>
       <script type="text/javascript">
+      
         var components_collection = [
           new ovi.mapsapi.map.component.Behavior(), //behavior collection 
           new ovi.mapsapi.map.component.ZoomBar(),
@@ -33,6 +34,24 @@
           zoomLevel: 10, //zoom level for the map
           center: venice //center coordinates
         });
+        
+        map.addObserver("zoomLevel", function(obj, key, new_value, old_value) {
+      		display_thounds(null);
+      	});
+        
+        /*if (ovi.mapsapi.positioning.Manager) {
+                var positioning = new ovi.mapsapi.positioning.Manager();
+                positioning.getCurrentPosition(
+                    function(position) {
+                        var coords = position.coords;
+                        var marker = new ovi.mapsapi.map.StandardMarker(coords);
+                        var accuracyCircle = new ovi.mapsapi.map.Circle(coords, coords.accuracy);
+                        map.objects.addAll([accuracyCircle, marker]);
+                        //map.zoomTo(accuracyCircle.getBoundingBox(), false, "default");
+                        //if (MAP1.zoomLevel > 16) MAP1.set("zoomLevel", 16); //zoom out if too close
+                    }
+                );
+            }*/
         
         //remove zoom.MouseWheel behavior for better page scrolling experience
         map.removeComponent(map.getComponentById("zoom.MouseWheel"));
