@@ -12,31 +12,13 @@ from GeotaggedThound import GeotaggedThound
 import random
 from datetime import datetime
 
+
 API_ENDPOINT = "http://thounds.local:3000"
 
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        result = urlfetch.fetch(url=API_ENDPOINT + "/thounds/public_stream",
-                                headers={'Accept': 'application/json'},
-                                deadline=10)
-                                
-        if result.status_code == 200:
-          thounds = simplejson.loads(result.content)['thounds-collection']['thounds']
-        
-        logging.debug(thounds)
-        
-        for thound in thounds:
-            geotagged_thound = GeotaggedThound()
-
-            if thound['tracks'][0]['lat']:
-                geotagged_thound.location = db.GeoPt(thound['tracks'][0]['lat'], thound['tracks'][0]['lng'])
-            else:
-                geotagged_thound.location = db.GeoPt(random.uniform(45, 46), random.uniform(12, 13))
-            
-            geotagged_thound.created_at = datetime.strptime(thound['created_at'], "%Y-%m-%dT%H:%M:%SZ")
-            geotagged_thound.data = simplejson.dumps(thound)
-            geotagged_thound.put()
+        thounds = []
         
         template_values = {
             'title': 'Thounds Map',
