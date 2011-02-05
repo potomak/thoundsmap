@@ -12,7 +12,8 @@ from GeotaggedThound import GeotaggedThound
 import random
 from datetime import datetime
 
-API_ENDPOINT = "http://thounds.local:3000"
+#API_ENDPOINT = "http://thounds.local:3000"
+API_ENDPOINT = "http://thounds.com"
 
 
 class MainHandler(webapp.RequestHandler):
@@ -55,6 +56,11 @@ class GetThoundsHandler(webapp.RequestHandler):
         logging.debug(list(geotagged_thounds))
         
         self.response.out.write(geotagged_thounds)
+        
+        
+class GetThoundsTempList(webapp.RequestHandler):
+    def get(self):
+        self.response.out.write(simplejson.dumps({'some': [self.request.get('tl_lat'), self.request.get('tl_lng'), self.request.get('br_lat'), self.request.get('br_lng')]}))
 
 
 def main():
@@ -64,7 +70,9 @@ def main():
     logging.getLogger().setLevel(logging.DEBUG)
         
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/get', GetThoundsHandler)],
+                                          ('/get', GetThoundsHandler),
+                                          ('/getthounds', GetThoundsTempList),
+                                          ],
                                          debug=True)
     util.run_wsgi_app(application)
 

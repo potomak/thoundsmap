@@ -63,9 +63,11 @@
         }
         
         function display_thounds(evt) {
+            var bbox = map.getViewBounds();
+            var qs = "tl_lat=" + bbox.topLeft.latitude + "&tl_lng=" + bbox.topLeft.longitude + "&br_lat=" + bbox.bottomRight.latitude + "&br_lng=" + bbox.bottomRight.longitude;
             $.ajax ({
 			    type: "GET",
-			    url: "/geotagged",
+			    url: "/getthounds?" + qs,
 			    dataType: "json",
 			    cache: false, //VITAL line: the getJON func does not prevent caching!
 			    success: updater
