@@ -28,17 +28,16 @@ class MainHandler(webapp.RequestHandler):
 
 class GetThoundsHandler(webapp.RequestHandler):
     def get(self):
-        geotagged_thounds = db.GqlQuery("SELECT * FROM GeotaggedThound WHERE location > GEOPT(:tl_lat, :tl_lng) AND location < GEOPT(:br_lat, :br_lng)", tl_lat=self.request.get('tl_lat'), tl_lng=self.request.get('tl_lng'), br_lat=self.request.get('br_lat'), br_lng=self.request.get('br_lng'))
+        geotagged_thounds = db.GqlQuery("SELECT * FROM GeotaggedThound WHERE location > GEOPT(:br_lat, :tl_lng) AND location < GEOPT(:tl_lat, :br_lng)", tl_lat=self.request.get('tl_lat'), tl_lng=self.request.get('tl_lng'), br_lat=self.request.get('br_lat'), br_lng=self.request.get('br_lng'))
         
         logging.debug("GetThoundsHandler num:")
         logging.debug(len(list(geotagged_thounds)))
         
-        response_body = "["
+        response_body = []
         for thound in geotagged_thounds:
-            response_body += thound.data + ","
-        response_body += "]"
+            response_body.append(simplejson.loads(thound.data))
         
-        self.response.out.write(response_body)
+        self.response.out.write(simplejson.dumps(response_body))
         
         
 class GetThoundsTempList(webapp.RequestHandler):
