@@ -12,6 +12,22 @@ ThoundsMap.ui = (function() {
       };
     })(),
     
+    loading: (function() {
+      return {
+        progress: function(percentage) {
+          $("#loading").css('width', percentage + '%');
+        }
+      };
+    })(),
+    
+    playing: (function() {
+      return {
+        progress: function(percentage) {
+          $("#playing").css('width', percentage + '%');
+        }
+      };
+    })(),
+    
     createBubble: function(thound_id) {
       html_string = "<div class='player'>"
                   + "<div class='title'>" + thounds[thound_id].tracks[0].title + "</div>"

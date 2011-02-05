@@ -6,7 +6,12 @@
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
     <script src="http://api.maps.ovi.com/jsl.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://code.jquery.com/jquery-1.5.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/sm2/script/soundmanager2.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#map").css({width: $(window).width(), height: $(window).height()});
+      });
+    </script>
+    <script src="/sm2/script/soundmanager2-nodebug-jsmin.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
       soundManager.url = '/sm2/swf/';
       soundManager.useHTML5Audio = true;
@@ -19,6 +24,8 @@
     <script src="/javascripts/thounds_map.ui.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
+    <div id="wrapper">
+      
     <div id="thounds_map_logo">
       <h1>{{ title }}</h1>
     </div>
@@ -60,7 +67,7 @@
                     title: "position",
                     visibility: true,
                     icon: "/images/youarehere.png",
-                    anchor: new ovi.mapsapi.util.Point(16, 16),
+                    anchor: new ovi.mapsapi.util.Point(26, 82),
                     eventListener: {}
                     }
                 );

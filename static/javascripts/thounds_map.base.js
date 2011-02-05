@@ -39,6 +39,15 @@ var ThoundsMap = (function () {
           console.log("Song playing...");
         }
       });
+    },
+    
+    stop: function() {
+      if(ThoundsMap.thoundSound) {
+        console.log("Stop (ThoundsRadio.thoundSound.playState: " + ThoundsRadio.thoundSound.playState);
+        ThoundsMap.thoundSound.destruct();
+      }
+      ThoundsMap.ui.loading.complete();
+      return true;
     }
   };
 })();
