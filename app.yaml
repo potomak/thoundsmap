@@ -17,6 +17,9 @@ handlers:
 - url: /javascripts
   static_dir: static/javascripts
 
+- url: /sm2
+  static_dir: static/sm2
+
 - url: .*
   script: main.py
 

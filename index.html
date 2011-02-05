@@ -6,6 +6,16 @@
     <script src="http://api.maps.ovi.com/jsl.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://code.jquery.com/jquery-1.5.min.js" type="text/javascript" charset="utf-8"></script>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+    <script type="text/javascript">
+      soundManager.url = '/sm2/swf/';
+      soundManager.useHTML5Audio = true;
+      soundManager.flashVersion = 9;
+      soundManager.onready(function(oStatus) {
+        ThoundsRadio.onReady(oStatus.success);
+      });
+    </script>
+    <script src="/javascript/thounds_map.base.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/javascript/thounds_map.ui.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <h1>{{ title }}</h1>
