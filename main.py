@@ -28,12 +28,17 @@ class MainHandler(webapp.RequestHandler):
 
 class GetThoundsHandler(webapp.RequestHandler):
     def get(self):
-        geotagged_thounds = db.GqlQuery("SELECT * FROM GeotaggedThound")
+        geotagged_thounds = db.GqlQuery("SELECT * FROM GeotaggedThound WHERE location > GEOPT(:tl_lat, :tl_lng) AND location < GEOPT(:br_lat, :br_lng)", tl_lat=self.request.get('tl_lat'), tl_lng=self.request.get('tl_lng'), br_lat=self.request.get('br_lat'), br_lng=self.request.get('br_lng'))
         
-        logging.debug("Yo BRO!")
-        logging.debug(list(geotagged_thounds))
+        logging.debug("GetThoundsHandler num:")
+        logging.debug(len(list(geotagged_thounds)))
         
-        self.response.out.write(geotagged_thounds)
+        response_body = "["
+        for thound in geotagged_thounds:
+            response_body += thound.data + ","
+        response_body += "]"
+        
+        self.response.out.write(response_body)
         
         
 class GetThoundsTempList(webapp.RequestHandler):
@@ -79,7 +84,7 @@ def main():
     logging.getLogger().setLevel(logging.DEBUG)
         
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/get', GetThoundsHandler),
+                                          ('/get_thounds', GetThoundsHandler),
                                           ('/getthounds', GetThoundsTempList),
                                           ('/run_script', RunScriptHandler)],
                                          debug=True)
