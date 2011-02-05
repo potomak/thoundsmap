@@ -49,7 +49,7 @@
       		display_thounds(null);
       	});
         
-        /*if (ovi.mapsapi.positioning.Manager) {
+        if (ovi.mapsapi.positioning.Manager) {
                 var positioning = new ovi.mapsapi.positioning.Manager();
                 positioning.getCurrentPosition(
                     function(position) {
@@ -57,11 +57,12 @@
                         var marker = new ovi.mapsapi.map.StandardMarker(coords);
                         var accuracyCircle = new ovi.mapsapi.map.Circle(coords, coords.accuracy);
                         map.objects.addAll([accuracyCircle, marker]);
+                        map.setAttributes ("default", coords, 7, null, null);
                         //map.zoomTo(accuracyCircle.getBoundingBox(), false, "default");
                         //if (MAP1.zoomLevel > 16) MAP1.set("zoomLevel", 16); //zoom out if too close
                     }
                 );
-            }*/
+            }
         
         //remove zoom.MouseWheel behavior for better page scrolling experience
         map.removeComponent(map.getComponentById("zoom.MouseWheel"));
