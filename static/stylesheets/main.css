@@ -30,9 +30,11 @@ body {
 .title {
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
+	font-weight: bold;
 }
 
 .controls_wrapper {
+	margin-top: 10px;
 	width: 34px;
 	height: 30px;
 	position: relative;
@@ -57,6 +59,7 @@ body {
 }
 
 .progress_wrapper {
+	margin-top: 10px;
 	width: 100px;
 	height: 10px;
 	position: relative;
