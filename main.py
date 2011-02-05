@@ -12,32 +12,10 @@ from GeotaggedThound import GeotaggedThound
 import random
 from datetime import datetime
 
-#API_ENDPOINT = "http://thounds.local:3000"
-API_ENDPOINT = "http://thounds.com"
-
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        result = urlfetch.fetch(url=API_ENDPOINT + "/thounds/public_stream",
-                                headers={'Accept': 'application/json'},
-                                deadline=10)
-                                
-        if result.status_code == 200:
-          thounds = simplejson.loads(result.content)['thounds-collection']['thounds']
-        
-        logging.debug(thounds)
-        
-        for thound in thounds:
-            geotagged_thound = GeotaggedThound()
-
-            if thound['tracks'][0]['lat']:
-                geotagged_thound.location = db.GeoPt(thound['tracks'][0]['lat'], thound['tracks'][0]['lng'])
-            else:
-                geotagged_thound.location = db.GeoPt(random.uniform(45, 46), random.uniform(12, 13))
-            
-            geotagged_thound.created_at = datetime.strptime(thound['created_at'], "%Y-%m-%dT%H:%M:%SZ")
-            geotagged_thound.data = simplejson.dumps(thound)
-            geotagged_thound.put()
+        thounds = []
         
         template_values = {
             'title': 'Thounds Map',
@@ -63,6 +41,37 @@ class GetThoundsTempList(webapp.RequestHandler):
         self.response.out.write(simplejson.dumps({'some': [self.request.get('tl_lat'), self.request.get('tl_lng'), self.request.get('br_lat'), self.request.get('br_lng')]}))
 
 
+class RunScriptHandler(webapp.RequestHandler):
+    def get(self):
+        import re
+        
+        f = open('thounds.js')
+        thounds = simplejson.loads(f.read())['thounds-collection']['thounds']
+
+        self.response.out.write(len(thounds))
+
+        geotagged = []
+
+        for thound in thounds:
+            if thound['tracks'][0]['lat']:
+                geotagged.append(thound)
+
+        self.response.out.write(len(geotagged))
+
+        for thound in geotagged:
+            geotagged_thound = GeotaggedThound()
+
+            geotagged_thound.location = db.GeoPt(thound['tracks'][0]['lat'], thound['tracks'][0]['lng'])
+            if "Z" in thound['created_at']:
+                geotagged_thound.created_at = datetime.strptime(re.sub("Z", "", thound['created_at']), "%Y-%m-%dT%H:%M:%S")
+            else:
+                geotagged_thound.created_at = datetime.strptime(re.sub("\+(\d+):(\d+)", "", thound['created_at']), "%Y-%m-%dT%H:%M:%S")
+            geotagged_thound.data = simplejson.dumps(thound)
+            geotagged_thound.put()
+
+        self.response.out.write("done!")
+
+
 def main():
     # Set the logging level in the main function
     # See the section on Requests and App Caching for information on how
@@ -72,7 +81,7 @@ def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/get', GetThoundsHandler),
                                           ('/getthounds', GetThoundsTempList),
-                                          ],
+                                          ('/run_script', RunScriptHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 
