@@ -32,7 +32,7 @@ ThoundsMap.map = (function () {
       return html_string;
     },
     
-    markerClickCallback: function(thound_id) {
+    markerClickCallback: function(thound_id, lat, lng) {
       infobubbles.addBubble(
         ThoundsMap.map.createBubble(thound_id),
         new ovi.mapsapi.geo.Coordinate(lat, lng)
@@ -50,8 +50,8 @@ function put_marker(thound, lat, lng) {
         icon: "/images/thounds_pin.png",
         anchor: new ovi.mapsapi.util.Point(16, 16),
         eventListener: {
-          click: function(event) { ThoundsMap.map.markerClickCallback(thound.id); },
-          tap: function(event) { ThoundsMap.map.markerClickCallback(thound.id); }
+          click: function(event) { ThoundsMap.map.markerClickCallback(thound.id, lat, lng); },
+          tap: function(event) { ThoundsMap.map.markerClickCallback(thound.id, lat, lng); }
         }
       }
     );
