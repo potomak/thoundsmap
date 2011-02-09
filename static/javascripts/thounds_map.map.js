@@ -14,6 +14,33 @@ var infobubbles = new ovi.mapsapi.map.component.InfoBubbles();
 
 var venice = [45.4375, 12.335833];
 
+ThoundsMap.map = (function () {
+  return {
+    createBubble: function(thound_id) {
+      html_string = "<div class='player' id='thound_" + thound_id + "'>"
+                  + "<div class='title'>" + thounds[thound_id].tracks[0].title + "</div>"
+                  + "<div class='controls_wrapper'>"
+                  + "<a class='play' onclick='ThoundsMap.ui.controls.play(" + thound_id + ")'>Play</a>"
+                  + "<a class='stop' onclick='ThoundsMap.ui.controls.stop(" + thound_id + ")' style='display: none'>Stop</a>"
+                  + "</div>"
+                  + "<div class='progress_wrapper'>"
+                  + "<div class='loading'></div>"
+                  + "<div class='playing'></div>"
+                  + "</div>"
+                  + "</div>";
+      
+      return html_string;
+    },
+    
+    markerClickCallback: function(thound_id) {
+      infobubbles.addBubble(
+        ThoundsMap.map.createBubble(thound_id),
+        new ovi.mapsapi.geo.Coordinate(lat, lng)
+      );
+    }
+  };
+})();
+
 function put_marker(thound, lat, lng) {
   if (!markers[thound.id]) {
     var m = new ovi.mapsapi.map.Marker(
@@ -23,18 +50,8 @@ function put_marker(thound, lat, lng) {
         icon: "/images/thounds_pin.png",
         anchor: new ovi.mapsapi.util.Point(16, 16),
         eventListener: {
-          click: function(event) {
-            infobubbles.addBubble(
-              ThoundsMap.ui.createBubble(thound.id),
-              new ovi.mapsapi.geo.Coordinate(lat, lng)
-            );
-          },
-          tap: function(event) {
-            infobubbles.addBubble(
-              ThoundsMap.ui.createBubble(thound.id),
-              new ovi.mapsapi.geo.Coordinate(lat, lng)
-            );
-          }
+          click: function(event) { ThoundsMap.map.markerClickCallback(thound.id); },
+          tap: function(event) { ThoundsMap.map.markerClickCallback(thound.id); }
         }
       }
     );
@@ -112,7 +129,7 @@ function init_map() {
   }
   
   //remove zoom.MouseWheel behavior for better page scrolling experience
-  map.removeComponent(map.getComponentById("zoom.MouseWheel"));
+  //map.removeComponent(map.getComponentById("zoom.MouseWheel"));
   map.components.add(infobubbles);
   
   map.addListener("dragend", display_thounds, false);
