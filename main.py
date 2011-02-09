@@ -9,7 +9,6 @@ from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from django.utils import simplejson
 from GeotaggedThound import GeotaggedThound
-import random
 from datetime import datetime
 
 
@@ -30,21 +29,19 @@ class GetThoundsHandler(webapp.RequestHandler):
     def get(self):
         geotagged_thounds = db.GqlQuery("SELECT * FROM GeotaggedThound WHERE location > GEOPT(:br_lat, :tl_lng) AND location < GEOPT(:tl_lat, :br_lng)", tl_lat=self.request.get('tl_lat'), tl_lng=self.request.get('tl_lng'), br_lat=self.request.get('br_lat'), br_lng=self.request.get('br_lng'))
         
-        logging.debug("GetThoundsHandler num:")
-        logging.debug(len(list(geotagged_thounds)))
+        # logging.debug("GetThoundsHandler num:")
+        # logging.debug(len(list(geotagged_thounds)))
         
         response_body = []
         for thound in geotagged_thounds:
             response_body.append(simplejson.loads(thound.data))
         
         self.response.out.write(simplejson.dumps(response_body))
-        
-        
-class GetThoundsTempList(webapp.RequestHandler):
-    def get(self):
-        self.response.out.write(simplejson.dumps({'some': [self.request.get('tl_lat'), self.request.get('tl_lng'), self.request.get('br_lat'), self.request.get('br_lng')]}))
 
 
+#
+# TODO: remove this handler and create a cronjob
+#
 class RunScriptHandler(webapp.RequestHandler):
     def get(self):
         import re
@@ -84,8 +81,8 @@ def main():
         
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/get_thounds', GetThoundsHandler),
-                                          ('/getthounds', GetThoundsTempList),
-                                          ('/run_script', RunScriptHandler)],
+                                          #('/run_script', RunScriptHandler)
+                                         ],
                                          debug=True)
     util.run_wsgi_app(application)
 
